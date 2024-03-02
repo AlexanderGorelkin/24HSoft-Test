@@ -10,6 +10,8 @@ import UIKit
 protocol PhotoListViewProtocol: AnyObject {
     func reloadCollectionView(with data: PhotoList)
     func showAlertController(with error: NetworkError)
+    func startLoader()
+    func stopLoader()
 }
 class PhotoListViewController: UIViewController {
     // MARK: - Public
@@ -24,6 +26,11 @@ class PhotoListViewController: UIViewController {
         collectionView.backgroundColor = .clear
         collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: PhotoListCell.identifier)
         return collectionView
+    }()
+    private lazy var loader: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
     }()
     // MARK: - View lifecycle
     override func viewDidLoad() {
@@ -53,6 +60,15 @@ private extension PhotoListViewController {
 
 // MARK: - PhotoListViewProtocol
 extension PhotoListViewController: PhotoListViewProtocol {
+    func startLoader() {
+        view.addView(loader)
+        loader.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loader.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        loader.startAnimating()
+    }
+    func stopLoader() {
+        loader.stopAnimating()
+    }
     func showAlertController(with error: NetworkError) {
         let alertController = UIAlertController(title: "Error", message: error.errorDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

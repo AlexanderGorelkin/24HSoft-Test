@@ -25,6 +25,7 @@ class PhotoListPresenter {
 extension PhotoListPresenter: PhotoListPresenterProtocol {
     func viewDidLoaded() {
         interactor.fetchPhotoList()
+        view?.startLoader()
     }
     func didTapCell(on indexPath: Int) {
         let imageURL = interactor.photoList[indexPath].urls.regular
@@ -33,6 +34,7 @@ extension PhotoListPresenter: PhotoListPresenterProtocol {
     }
     func dataLoaded(with photoList: PhotoList) {
         view?.reloadCollectionView(with: photoList)
+        view?.stopLoader()
     }
     func dataLoaded(with error: NetworkError) {
         router.showAlertController(with: error)
