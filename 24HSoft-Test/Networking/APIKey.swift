@@ -7,5 +7,5 @@
 
 import Foundation
 struct API {
-    static let key: String = "Вставьте рабочий ключ сюда"
+    static let key: String = "6Tx-90oZgklpDnWQRkD8JFYoYai0eh_JT5bFyu1UziI"
 }

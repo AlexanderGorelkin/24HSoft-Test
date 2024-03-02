@@ -19,6 +19,7 @@ final class PhotoListCell: UICollectionViewCell {
     private lazy var likesLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.textColor = .black
         label.font = .systemFont(ofSize: 15, weight: .bold)
         label.text = "likesLabel"
          return label
@@ -73,7 +74,12 @@ final class PhotoListCell: UICollectionViewCell {
     }
     func setupCell(with model: PhotoListModel) {
         if let url = URL(string: model.urls.thumb){
-            imageView.kf.setImage(with: url)
+            imageView.kf.indicatorType = .activity
+            imageView.kf.setImage(
+                with: url,
+                options: [
+                    .cacheOriginalImage
+                ])
         }
         if let description = model.description {
             desriptionLabel.text = description

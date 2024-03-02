@@ -21,6 +21,11 @@ class PhotoDetailViewController: UIViewController {
         imageView.layer.masksToBounds = true
         return imageView
     }()
+    private lazy var loader: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,13 +59,21 @@ private extension PhotoDetailViewController {
 // MARK: - PhotoDetailViewProtocol
 extension PhotoDetailViewController: PhotoDetailViewProtocol {
     func showImage(imageURL: URL) {
-        imageView.kf.setImage(with: imageURL)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(
+            with: imageURL,
+            options: [
+                .cacheOriginalImage
+            ])
     }
     func setTitle(title: String) {
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         self.title = title
     }
     func popToRoot() {
         presenter?.popToRoot()
     }
+   
 }
 
